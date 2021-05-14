@@ -29,7 +29,7 @@ const deleteUser = async (id) => {
   if (userPresence === -1) {
     throw new Error('User is not exist!');
   } else {
-    users.filter(user => user.id !== id);
+    users.splice(userPresence, 1);
   }
 }
 

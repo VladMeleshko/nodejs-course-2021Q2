@@ -23,7 +23,7 @@ router.route('/').post(async (req, res) => {
     const user = await usersService.createUser(name, login, password);
     res.status(201).json(User.toResponse(user));
   } catch {
-    res.status(404).send('User was not created');
+    res.status(404).send('User was not created!');
   }
 });
 
@@ -42,7 +42,7 @@ router.route('/:id').delete(async (req, res) => {
   try {
     const {id} = req.params;
     await usersService.deleteUser(id);
-    res.status(200).send('User deleted!');
+    res.status(200).send('User has been deleted!');
   } catch(e) {
     res.status(404).send('Error', e);
   }
