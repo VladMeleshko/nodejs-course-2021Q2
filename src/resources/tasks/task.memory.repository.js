@@ -17,13 +17,9 @@ const updateTask = async (id, title, order, description, userId, boardId, column
     if (taskPresence === -1) {
         throw new Error('Task is not exist!');
     } else {
-        tasks[taskPresence].title = title;
-        tasks[taskPresence].order = order;
-        tasks[taskPresence].description = description;
-        tasks[taskPresence].userId = userId;
-        tasks[taskPresence].boardId = boardId;
-        tasks[taskPresence].columnId = columnId;
-        return tasks[taskPresence];
+        const newTask = {...tasks[taskPresence], title, order, description, userId, boardId, columnId};
+        tasks.splice(taskPresence, 1, newTask);
+        return newTask;
     }
 }
 

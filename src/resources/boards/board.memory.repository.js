@@ -17,9 +17,9 @@ const updateBoard = async (id, title, columns) => {
     if (boardPresence === -1) {
         throw new Error('Board is not exist!');
     } else {
-        boards[boardPresence].title = title;
-        boards[boardPresence].columns = columns;
-        return boards[boardPresence];
+        const newBoard = {...boards[boardPresence], title, columns};
+        boards.splice(boardPresence, 1, newBoard);
+        return newBoard;
     }
 }
 

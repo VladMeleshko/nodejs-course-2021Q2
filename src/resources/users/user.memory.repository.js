@@ -17,10 +17,9 @@ const updateUser = async (id, name, login, password) => {
   if (userPresence === -1) {
     throw new Error('User is not exist!');
   } else {
-    users[userPresence].name = name;
-    users[userPresence].login = login;
-    users[userPresence].password = password;
-    return users[userPresence];
+    const newUser = {...users[userPresence], name, login, password};
+    users.splice(userPresence, 1, newUser);
+    return newUser;
   }
 }
 
