@@ -1,6 +1,6 @@
 const Task = require('./task.model');
 
-const tasks = [new Task({title: 'ABC', order: 1, description: 'aBc'})]
+let tasks = [new Task({title: 'ABC', order: 1, description: 'aBc'})]
 
 const getAll = async () => tasks;
 
@@ -36,4 +36,31 @@ const deleteTask = async (id) => {
     }
 }
 
-module.exports = { getAll, getTaskById, createTask, updateTask, deleteTask };
+const deleteTasksFromBoard = async (boardId) => {
+    const boardTasks = tasks.filter(task => task.boardId === boardId);
+    if (boardTasks.length === 0) {
+        throw new Error('Board is not exist!');
+    } else {
+        tasks = tasks.filter(task => !boardTasks.includes(task));
+        return tasks;
+    }
+}
+
+const updateUserInTasks = async (userId) => {
+    const userTasks = tasks.filter(task => task.userId === userId);
+    if (userTasks.length === 0) {
+        throw new Error('User is not exist!');
+    } else {
+        tasks = tasks.map(task => {
+            if (userTasks.includes(task)) {
+                const newTask = {...task, userId: null};
+                return newTask;
+            } 
+                return task;
+            
+        });
+        return tasks;
+    }
+}
+
+module.exports = { getAll, getTaskById, createTask, updateTask, deleteTask, deleteTasksFromBoard, updateUserInTasks };
