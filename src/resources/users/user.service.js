@@ -42,7 +42,7 @@ const createUser = (name, login, password) => usersRepo.createUser(name, login, 
 const updateUser = (id, name, login, password) => usersRepo.updateUser(id, name, login, password);
 
 /**
- * Delete user and all tasks where user was assigned updated to put user's id to null.
+ * Delete user and all tasks where user was assigned updated to put user's id to null using the controller functions.
  * @param {string} id id of deleted user.
  * @returns {void} return an error or nothing.
  */
