@@ -1,7 +1,7 @@
 const tasksRepo = require('./task.memory.repository');
 
 /**
- * @typedef {import('./task.model').TaskModel} TaskModel
+ * @import {TaskModel} from './task.model'
  */
 
 /**

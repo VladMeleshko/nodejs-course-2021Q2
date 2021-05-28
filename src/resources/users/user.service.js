@@ -2,7 +2,7 @@ const usersRepo = require('./user.memory.repository');
 const tasksRepo = require('../tasks/task.memory.repository');
 
 /**
- * @typedef {import('./user.model').UserAccount} UserAccount user's id, name, login.
+ * @import {UserAccount} from './user.model'
  */
 
 /**

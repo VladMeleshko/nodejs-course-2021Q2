@@ -2,8 +2,8 @@ const boardsRepo = require('./board.memory.repository');
 const tasksRepo = require('../tasks/task.memory.repository');
 
 /**
- * @typedef {import('./board.model').BoardModel} BoardModel
- * @typedef {import('./board.model').ColumnsModel} ColumnsModel
+ * @import {BoardModel} from './board.model'
+ * @import {ColumnsModel} from './board.model'
  */
 
 /**
