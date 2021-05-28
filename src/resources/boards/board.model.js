@@ -14,7 +14,10 @@ const {v4: uuid} = require('uuid');
  */
 
 /**
- * @typedef {BoardInfo & {id: string}} BoardModel contains board's information and board's id.
+ * @typedef {Object} BoardModel contains board's information and board's id.
+ * @property {string} id board id.
+ * @property {string} title board title.
+ * @property {Array.<ColumnsModel>} columns board columns.
  */
 
 /** Class representing a board. */

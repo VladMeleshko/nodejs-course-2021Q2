@@ -2,16 +2,23 @@ const {v4: uuid} = require('uuid');
 
 /**
  * @typedef {Object} TaskInfo task's information.
- * @property {string} title task title
- * @property {number} order task order
- * @property {string} description task description
- * @property {string|null} userId task userId
- * @property {string} boardId task boardId
- * @property {string} columnId task columnId
+ * @property {string} title task title.
+ * @property {number} order task order.
+ * @property {string} description task description.
+ * @property {string|null} userId task userId.
+ * @property {string} boardId task boardId.
+ * @property {string} columnId task columnId.
  */
 
 /**
- * @typedef {TaskInfo & {id: string}} TaskModel contains task's information and task's id.
+ * @typedef {Object} TaskModel contains task's information and task's id.
+ * @property {string} id task id.
+ * @property {string} title task title.
+ * @property {number} order task order.
+ * @property {string} description task description.
+ * @property {string|null} userId task userId.
+ * @property {string} boardId task boardId.
+ * @property {string} columnId task columnId.
  */
 
 /** Class representing a task. */

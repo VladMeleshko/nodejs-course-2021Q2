@@ -7,15 +7,25 @@ const {v4: uuid} = require('uuid');
  */
 
 /**
- * @typedef {UserInfo & {password: string}} UserCredentials contains user's credentials (name, login, password).
+ * @typedef {Object} UserCredentials contains user's credentials (name, login, password).
+ * @property {string} name user name.
+ * @property {string} login user login.
+ * @property {string} password user password.
  */
 
 /**
- * @typedef {UserInfo & {id: string}} UserAccount contains account parameters (id, name, login).
+ * @typedef {Object} UserAccount contains account parameters (id, name, login).
+ * @property {string} id user id.
+ * @property {string} name user name.
+ * @property {string} login user login.
  */
 
 /**
- * @typedef {UserCredentials & {id: string}} UserModel contains full user's information (id, name, login, password).
+ * @typedef {Object} UserModel contains full user's information (id, name, login, password).
+ * @property {string} id user id.
+ * @property {string} name user name.
+ * @property {string} login user login.
+ * @property {string} password user password.
  */
 
 /** Class representing a user. */
