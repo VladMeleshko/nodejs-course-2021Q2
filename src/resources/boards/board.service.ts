@@ -1,5 +1,5 @@
 import boardsRepo from './board.memory.repository';
-// import tasksRepo from '../tasks/task.memory.repository';
+import tasksRepo from '../tasks/task.memory.repository';
 import { BoardModel, ColumnsModel } from './board.model';
 
 const getAll = (): Promise<BoardModel[]> => boardsRepo.getAll();
@@ -14,7 +14,7 @@ const updateBoard = (id: string, title: string, columns: ColumnsModel[]): Promis
 
 const deleteBoard = (id: string): void => {
   boardsRepo.deleteBoard(id);
-  //   tasksRepo.deleteTasksFromBoard(id);
+  tasksRepo.deleteTasksFromBoard(id);
 };
 
 export default { getAll, getBoardById, createBoard, updateBoard, deleteBoard };

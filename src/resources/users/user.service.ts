@@ -1,6 +1,6 @@
 import usersRepo from './user.memory.repository';
+import tasksRepo from '../tasks/task.memory.repository';
 import { UserModel } from './user.model';
-// import tasksRepo from './tasks/task.memory.repository';
 
 const getAll = (): Promise<Array<UserModel>> => usersRepo.getAll();
 
@@ -18,7 +18,7 @@ const updateUser = (
 
 const deleteUser = (id: string): void => {
   usersRepo.deleteUser(id);
-  //   tasksRepo.updateUserInTasks(id);
+  tasksRepo.updateUserInTasks(id);
 };
 
 export default { getAll, getUserById, createUser, updateUser, deleteUser };
