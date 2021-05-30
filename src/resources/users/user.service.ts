@@ -2,7 +2,7 @@ import usersRepo from './user.memory.repository';
 import tasksRepo from '../tasks/task.memory.repository';
 import { UserModel } from './user.model';
 
-const getAll = (): Promise<Array<UserModel>> => usersRepo.getAll();
+const getAll = (): Promise<UserModel[]> => usersRepo.getAll();
 
 const getUserById = (id: string): Promise<UserModel> => usersRepo.getUserById(id);
 

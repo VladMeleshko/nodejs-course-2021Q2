@@ -14,6 +14,10 @@ export interface UserModel extends UserInfo {
   password: string;
 }
 
+interface UserCredentials extends UserInfo {
+  password: string;
+}
+
 class User {
   id: UserModel['id'];
 
@@ -23,8 +27,8 @@ class User {
 
   password: UserModel['password'];
 
-  constructor({ id = uuid(), name = 'USER', login = 'user', password = 'P@55w0rd' } = {}) {
-    this.id = id;
+  constructor({ name = 'USER', login = 'user', password = 'P@55w0rd' }: UserCredentials) {
+    this.id = uuid();
     this.name = name;
     this.login = login;
     this.password = password;

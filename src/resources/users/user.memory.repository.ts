@@ -1,6 +1,6 @@
 import User, { UserModel } from './user.model';
 
-const users = [new User({ name: 'user', login: 'user', password: 'user' })];
+const users: UserModel[] = [];
 
 const getAll = async (): Promise<UserModel[]> => users;
 

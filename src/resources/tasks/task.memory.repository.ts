@@ -1,4 +1,3 @@
-// const Task = require('./task.model');
 import Task, { TaskModel } from './task.model';
 
 let tasks: TaskModel[] = [];
