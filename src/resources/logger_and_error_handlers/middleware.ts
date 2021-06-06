@@ -1,28 +1,30 @@
 import { finished } from 'stream';
-import logger from './logger';
 import { Request, Response, NextFunction } from 'express';
+import logger from './logger';
 
-export const exceptionLogger = (err: Error): void => {
+const exceptionLogger = (err: Error): void => {
   logger.error(`Exeption error ${err}`);
 };
 
-export const rejectionLogger = (err: Error): void => {
+const rejectionLogger = (err: Error): void => {
   logger.error(`Rejection ${err}`);
 };
 
-export const err = (): void => {
-  logger.error('error', 'error message!');
+const errorHandler = (err: Error, _: Request, res: Response, next: NextFunction): void => {
+  logger.error(`${err.message}, status code: 500`);
+  res.status(500).send('Something break!');
+  next();
 };
 
-export const logging = (req: Request, res: Response, next: NextFunction): void => {
-  const { url, method, params, query, body } = req;
+const logging = (req: Request, res: Response, next: NextFunction): void => {
+  const { originalUrl, method, params, query, body } = req;
 
   next();
 
   finished(res, () => {
     const { statusCode } = res;
     logger.info(
-      `method: ${method}, url: ${url}, query parametrs: ${JSON.stringify(
+      `method: ${method}, url: ${originalUrl}, query parametrs: ${JSON.stringify(
         query,
       )}, request parametrs: ${JSON.stringify(params)}, body: ${JSON.stringify(
         body,
@@ -31,3 +33,5 @@ export const logging = (req: Request, res: Response, next: NextFunction): void =
     );
   });
 };
+
+export default { exceptionLogger, rejectionLogger, errorHandler, logging };

@@ -7,9 +7,16 @@ const logInInfoFile = format(log => {
   return false;
 });
 
+const viewFormat = format.printf(({ message, timestamp }) => `${timestamp}: ${message}`);
+
 const logger = createLogger({
   level: 'error',
-  format: format.combine(format.uncolorize(), format.json()),
+  format: format.combine(
+    format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+    format.uncolorize(),
+    format.json(),
+    viewFormat,
+  ),
   transports: [
     new transports.File({
       filename: './logs/error.log',
@@ -17,7 +24,13 @@ const logger = createLogger({
     new transports.File({
       level: 'info',
       filename: './logs/info.log',
-      format: format.combine(format.uncolorize(), format.json(), logInInfoFile()),
+      format: format.combine(
+        format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+        format.uncolorize(),
+        format.json(),
+        logInInfoFile(),
+        viewFormat,
+      ),
     }),
   ],
 });
