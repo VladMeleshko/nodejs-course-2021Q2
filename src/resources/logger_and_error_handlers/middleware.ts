@@ -1,11 +1,16 @@
 import { finished } from 'stream';
 import logger from './logger';
+import { Request, Response, NextFunction } from 'express';
 
-export const err = () => {
+export const exceptionLogger = (err: Error): void => {
+  logger.error(`Exeption error ${err}`, () => process.exit(1));
+};
+
+export const err = (): void => {
   logger.error('error', 'error message!');
 };
 
-export const logging = (req: any, res: any, next: Function): void => {
+export const logging = (req: Request, res: Response, next: NextFunction): void => {
   const { url, method, params, query, body } = req;
 
   next();

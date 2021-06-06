@@ -32,4 +32,6 @@ app.use('/boards', boardRouter);
 
 app.use(middleware.err);
 
+process.on('uncaughtException', middleware.exceptionLogger);
+
 export default app;
