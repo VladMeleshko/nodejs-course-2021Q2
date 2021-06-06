@@ -4,10 +4,12 @@ import logger from './logger';
 
 const exceptionLogger = (err: Error): void => {
   logger.error(`Exeption error ${err}`);
+  setTimeout(() => process.exit(1), 100);
 };
 
 const rejectionLogger = (err: Error): void => {
   logger.error(`Rejection ${err}`);
+  setTimeout(() => process.exit(1), 100);
 };
 
 const errorHandler = (err: Error, _: Request, res: Response, next: NextFunction): void => {
