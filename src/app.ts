@@ -33,5 +33,9 @@ app.use('/boards', boardRouter);
 app.use(middleware.err);
 
 process.on('uncaughtException', middleware.exceptionLogger);
+// throw Error('Oops!');
+
+process.on('unhandledRejection', middleware.rejectionLogger);
+// Promise.reject();
 
 export default app;

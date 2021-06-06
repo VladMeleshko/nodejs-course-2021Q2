@@ -3,7 +3,11 @@ import logger from './logger';
 import { Request, Response, NextFunction } from 'express';
 
 export const exceptionLogger = (err: Error): void => {
-  logger.error(`Exeption error ${err}`, () => process.exit(1));
+  logger.error(`Exeption error ${err}`);
+};
+
+export const rejectionLogger = (err: Error): void => {
+  logger.error(`Rejection ${err}`);
 };
 
 export const err = (): void => {
