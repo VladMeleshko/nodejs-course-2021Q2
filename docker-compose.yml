@@ -1,0 +1,7 @@
+version: '3'
+services:
+  docker-basics-nodejs:
+    build: .
+    restart: on-failure
+    ports:
+      - ${PORT}:${PORT}
