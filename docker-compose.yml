@@ -3,5 +3,13 @@ services:
   docker-basics-nodejs:
     build: .
     restart: on-failure
+    volumes:
+      - ./:/usr/src
     ports:
       - ${PORT}:${PORT}
+    networks:
+      - docker-basics-user-defined-bridge
+
+networks:
+  docker-basics-user-defined-bridge:
+    driver: bridge
