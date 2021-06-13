@@ -1,5 +1,3 @@
-# RS School REST service
-
 # How to use Docker:
 
 ## 1. Clone repository:
@@ -19,6 +17,8 @@
 ## 3. If you want to re-build an image and start container:
 
 > docker-compose up --build
+
+# RS School REST service
 
 ## Prerequisites
 
