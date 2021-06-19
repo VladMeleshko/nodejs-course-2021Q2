@@ -1,22 +1,25 @@
-import User, { UserModel } from './user.model';
+import { Users } from '../../entities/user';
+import { tryDBConnect } from '../../helpers/db';
 
-const users: UserModel[] = [];
+const userRepositoryPromise = tryDBConnect().then(connection => connection.getRepository(Users));
 
-const getAll = async (): Promise<UserModel[]> => users;
-
-const getUserById = async (id: string): Promise<UserModel> => {
-  const user = users.find(userItem => userItem.id === id);
-  if (!user) {
-    throw new Error('User is not exist!');
-  } else {
-    return user;
-  }
+const getAll = async (): Promise<Users[]> => {
+  const userRepository = await userRepositoryPromise;
+  const users = await userRepository.find();
+  return users;
 };
 
-const createUser = async (name: string, login: string, password: string): Promise<UserModel> => {
-  const newUser = new User({ name, login, password });
-  users.push(newUser);
-  return newUser;
+const getUserById = async (id: string): Promise<Users> => {
+  const userRepository = await userRepositoryPromise;
+  const user = await userRepository.findOneOrFail(id);
+  return user;
+};
+
+const createUser = async (name: string, login: string, password: string): Promise<Users> => {
+  const userRepository = await userRepositoryPromise;
+  const user = await userRepository.create({ name, login, password });
+  await userRepository.save(user);
+  return user;
 };
 
 const updateUser = async (
@@ -24,25 +27,17 @@ const updateUser = async (
   name: string,
   login: string,
   password: string,
-): Promise<UserModel> => {
-  const userPresence = users.findIndex(user => user.id === id);
-  const user = users[userPresence];
-  if (!user) {
-    throw new Error('User is not exist!');
-  } else {
-    const newUser = { ...user, name, login, password };
-    users.splice(userPresence, 1, newUser);
-    return newUser;
-  }
+): Promise<Users> => {
+  const userRepository = await userRepositoryPromise;
+  const user = await userRepository.findOneOrFail(id);
+  await userRepository.update(id, { name, login, password });
+  return user;
 };
 
 const deleteUser = async (id: string): Promise<void> => {
-  const userPresence = users.findIndex(user => user.id === id);
-  if (userPresence === -1) {
-    throw new Error('User is not exist!');
-  } else {
-    users.splice(userPresence, 1);
-  }
+  const userRepository = await userRepositoryPromise;
+  await userRepository.findOneOrFail(id);
+  await userRepository.delete(id);
 };
 
 export default { getAll, getUserById, createUser, updateUser, deleteUser };

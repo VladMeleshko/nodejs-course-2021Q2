@@ -10,7 +10,7 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node -r ts-node/register ./src/server.ts",
-    "start-nodemon": "nodemon -L --watch src --exec npm start --ext ts --exitcrash",
+    "start-nodemon": "nodemon -L --watch src --exec npm start --ext ts",
     "lint": "eslint --ext .ts --fix src/",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand",
     "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace",
@@ -51,7 +51,10 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.23.2",
     "express": "4.17.1",
+    "pg": "^8.6.0",
+    "reflect-metadata": "^0.1.13",
     "swagger-ui-express": "4.1.6",
+    "typeorm": "^0.2.34",
     "uuid": "8.3.2",
     "winston": "^3.3.3",
     "yamljs": "0.3.0"
