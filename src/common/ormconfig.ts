@@ -1,6 +1,8 @@
 import { ConnectionOptions } from 'typeorm';
 import dotenv from 'dotenv';
 import path from 'path';
+import { Users } from '../entities/user';
+import { Tasks } from '../entities/task';
 
 dotenv.config({
   path: path.join(__dirname, '../../.env'),
@@ -15,7 +17,7 @@ export const config = {
   username: process.env['POSTGRES_USER'],
   password: process.env['POSTGRES_PASSWORD'],
   database: process.env['POSTGRES_DB'],
-  entities: ['src/entities/**/*.ts'],
+  entities: [Users, Tasks],
   //   migrations: ['src/migration/**/*.ts'],
   autoReconnect: true,
   reconnectTries: Number.MAX_VALUE,

@@ -1,29 +1,39 @@
-import Task, { TaskModel } from './task.model';
+import { Tasks } from '../../entities/task';
+import { tryDBConnect } from '../../helpers/db';
 
-let tasks: TaskModel[] = [];
+const taskRepositoryPromise = tryDBConnect().then(connection => connection.getRepository(Tasks));
 
-const getAll = async (): Promise<TaskModel[]> => tasks;
+const getAll = async (): Promise<Tasks[]> => {
+  const taskRepository = await taskRepositoryPromise;
+  const tasks = await taskRepository.find();
+  return tasks;
+};
 
-const getTaskById = async (id: string): Promise<TaskModel> => {
-  const task = tasks.find(taskItem => taskItem.id === id);
-  if (!task) {
-    throw new Error('Task is not exist!');
-  } else {
-    return task;
-  }
+const getTaskById = async (id: string): Promise<Tasks> => {
+  const taskRepository = await taskRepositoryPromise;
+  const task = await taskRepository.findOneOrFail(id);
+  return task;
 };
 
 const createTask = async (
   title: string,
   order: number,
   description: string,
-  userId: string | null,
+  userId: string,
   boardId: string,
   columnId: string,
-): Promise<TaskModel> => {
-  const newTask = new Task({ title, order, description, userId, boardId, columnId });
-  tasks.push(newTask);
-  return newTask;
+): Promise<Tasks> => {
+  const taskRepository = await taskRepositoryPromise;
+  const task = await taskRepository.create({
+    title,
+    order,
+    description,
+    userId,
+    boardId,
+    columnId,
+  });
+  await taskRepository.save(task);
+  return task;
 };
 
 const updateTask = async (
@@ -31,62 +41,36 @@ const updateTask = async (
   title: string,
   order: number,
   description: string,
-  userId: string | null,
+  userId: string,
   boardId: string,
   columnId: string,
-): Promise<TaskModel> => {
-  const taskPresence = tasks.findIndex(task => task.id === id);
-  const task = tasks[taskPresence];
-  if (!task) {
-    throw new Error('Task is not exist!');
-  } else {
-    const newTask = {
-      ...task,
-      title,
-      order,
-      description,
-      userId,
-      boardId,
-      columnId,
-    };
-    tasks.splice(taskPresence, 1, newTask);
-    return newTask;
-  }
+): Promise<Tasks> => {
+  const taskRepository = await taskRepositoryPromise;
+  const task = await taskRepository.findOneOrFail(id);
+  await taskRepository.update(id, { title, order, description, userId, boardId, columnId });
+  return task;
 };
 
 const deleteTask = async (id: string): Promise<void> => {
-  const taskPresence = tasks.findIndex(task => task.id === id);
-  if (taskPresence === -1) {
-    throw new Error('Task is not exist!');
-  } else {
-    tasks.splice(taskPresence, 1);
-  }
+  const taskRepository = await taskRepositoryPromise;
+  await taskRepository.findOneOrFail(id);
+  await taskRepository.delete(id);
 };
 
-const deleteTasksFromBoard = async (boardId: string): Promise<TaskModel[]> => {
-  const boardTasks = tasks.filter(task => task.boardId === boardId);
-  if (boardTasks.length === 0) {
-    throw new Error('Board is not exist!');
-  } else {
-    tasks = tasks.filter(task => !boardTasks.includes(task));
-    return tasks;
-  }
+const deleteTasksFromBoard = async (boardId: string): Promise<Tasks[]> => {
+  const taskRepository = await taskRepositoryPromise;
+  await taskRepository.findOneOrFail({ boardId });
+  await taskRepository.delete({ boardId });
+  const tasks = await taskRepository.find();
+  return tasks;
 };
 
-const updateUserInTasks = async (userId: string): Promise<TaskModel[]> => {
-  const userTasks = tasks.filter(task => task.userId === userId);
-  if (userTasks.length === 0) {
-    throw new Error('User is not exist!');
-  } else {
-    tasks = tasks.map(task => {
-      if (userTasks.includes(task)) {
-        const newTask = { ...task, userId: null };
-        return newTask;
-      }
-      return task;
-    });
-    return tasks;
-  }
+const updateUserInTasks = async (userId: string): Promise<Tasks[]> => {
+  const taskRepository = await taskRepositoryPromise;
+  await taskRepository.findOneOrFail({ userId });
+  await taskRepository.update({ userId }, { userId: undefined });
+  const tasks = await taskRepository.find();
+  return tasks;
 };
 
 export default {

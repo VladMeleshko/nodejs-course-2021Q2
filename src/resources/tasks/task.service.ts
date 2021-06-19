@@ -9,7 +9,7 @@ const createTask = (
   title: string,
   order: number,
   description: string,
-  userId: string | null,
+  userId: string,
   boardId: string,
   columnId: string,
 ): Promise<TaskModel> => tasksRepo.createTask(title, order, description, userId, boardId, columnId);
@@ -19,7 +19,7 @@ const updateTask = (
   title: string,
   order: number,
   description: string,
-  userId: string | null,
+  userId: string,
   boardId: string,
   columnId: string,
 ): Promise<TaskModel> =>
