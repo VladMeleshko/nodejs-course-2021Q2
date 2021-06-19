@@ -1,47 +1,39 @@
-import Board, { BoardModel, ColumnsModel } from './board.model';
+import { Boards } from '../../entities/board';
+import { tryDBConnect } from '../../helpers/db';
+import { ColumnsModel } from './board.model';
 
-const boards: BoardModel[] = [];
+const boardRepositoryPromise = tryDBConnect().then(connection => connection.getRepository(Boards));
 
-const getAll = async (): Promise<BoardModel[]> => boards;
-
-const getBoardById = async (id: string): Promise<BoardModel> => {
-  const board = boards.find(boardItem => boardItem.id === id);
-  if (!board) {
-    throw new Error('Board is not exist!');
-  } else {
-    return board;
-  }
+const getAll = async (): Promise<Boards[]> => {
+  const boardRepository = await boardRepositoryPromise;
+  const boards = await boardRepository.find();
+  return boards;
 };
 
-const createBoard = async (title: string, columns: ColumnsModel[]): Promise<BoardModel> => {
-  const newBoard = new Board({ title, columns });
-  boards.push(newBoard);
-  return newBoard;
+const getBoardById = async (id: string): Promise<Boards> => {
+  const boardRepository = await boardRepositoryPromise;
+  const board = await boardRepository.findOneOrFail(id);
+  return board;
 };
 
-const updateBoard = async (
-  id: string,
-  title: string,
-  columns: ColumnsModel[],
-): Promise<BoardModel> => {
-  const boardPresence = boards.findIndex(board => board.id === id);
-  const board = boards[boardPresence];
-  if (!board) {
-    throw new Error('Board is not exist!');
-  } else {
-    const newBoard = { ...board, title, columns };
-    boards.splice(boardPresence, 1, newBoard);
-    return newBoard;
-  }
+const createBoard = async (title: string, columns: ColumnsModel[]): Promise<Boards> => {
+  const boardRepository = await boardRepositoryPromise;
+  const board = await boardRepository.create({ title, columns });
+  await boardRepository.save(board);
+  return board;
+};
+
+const updateBoard = async (id: string, title: string, columns: ColumnsModel[]): Promise<Boards> => {
+  const boardRepository = await boardRepositoryPromise;
+  const board = await boardRepository.findOneOrFail(id);
+  await boardRepository.update(id, { title, columns });
+  return board;
 };
 
 const deleteBoard = async (id: string): Promise<void> => {
-  const boardPresence = boards.findIndex(board => board.id === id);
-  if (boardPresence === -1) {
-    throw new Error('Board is not exist!');
-  } else {
-    boards.splice(boardPresence, 1);
-  }
+  const boardRepository = await boardRepositoryPromise;
+  await boardRepository.findOneOrFail(id);
+  await boardRepository.delete(id);
 };
 
 export default { getAll, getBoardById, createBoard, updateBoard, deleteBoard };
