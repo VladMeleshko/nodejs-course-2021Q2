@@ -1,19 +1,19 @@
 import { Router } from 'express';
-import Task from './task.model';
 import tasksService from './task.service';
+import { toResponse } from './task.memory.repository';
 
 const router = Router({ mergeParams: true });
 
 router.route('/:boardId/tasks/').get(async (_, res) => {
   const tasks = await tasksService.getAll();
-  res.json(tasks.map(Task.toResponse));
+  res.json(tasks.map(task => toResponse(task)));
 });
 
 router.route('/:boardId/tasks/:id').get(async (req, res) => {
   try {
     const { id } = req.params;
     const task = await tasksService.getTaskById(id);
-    res.json(Task.toResponse(task));
+    res.json(toResponse(task));
   } catch {
     res.status(404).send('No such task exist!');
   }
@@ -31,7 +31,7 @@ router.route('/:boardId/tasks/').post(async (req, res) => {
       boardId,
       columnId,
     );
-    res.status(201).json(Task.toResponse(task));
+    res.status(201).json(toResponse(task));
   } catch {
     res.status(404).send('Task was not created!');
   }
@@ -50,7 +50,7 @@ router.route('/:boardId/tasks/:id').put(async (req, res) => {
       boardId,
       columnId,
     );
-    res.status(200).json(Task.toResponse(task));
+    res.status(200).json(toResponse(task));
   } catch (e) {
     res.status(404).send(e);
   }

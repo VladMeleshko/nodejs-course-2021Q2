@@ -1,25 +1,21 @@
 import usersRepo from './user.memory.repository';
 import tasksRepo from '../tasks/task.memory.repository';
-import { UserModel } from './user.model';
-import { TaskModel } from '../tasks/task.model';
+import { Users } from '../../entities/user';
+import { Tasks } from '../../entities/task';
 
-const getAll = (): Promise<UserModel[]> => usersRepo.getAll();
+const getAll = (): Promise<Users[]> => usersRepo.getAll();
 
-const getUserById = (id: string): Promise<UserModel> => usersRepo.getUserById(id);
+const getUserById = (id: string): Promise<Users> => usersRepo.getUserById(id);
 
-const createUser = (name: string, login: string, password: string): Promise<UserModel> =>
+const createUser = (name: string, login: string, password: string): Promise<Users> =>
   usersRepo.createUser(name, login, password);
 
-const updateUser = (
-  id: string,
-  name: string,
-  login: string,
-  password: string,
-): Promise<UserModel> => usersRepo.updateUser(id, name, login, password);
+const updateUser = (id: string, name: string, login: string, password: string): Promise<Users> =>
+  usersRepo.updateUser(id, name, login, password);
 
 const deleteUser = async (
   id: string,
-): Promise<[PromiseSettledResult<void>, PromiseSettledResult<TaskModel[]>]> =>
+): Promise<[PromiseSettledResult<void>, PromiseSettledResult<Tasks[]>]> =>
   Promise.allSettled([usersRepo.deleteUser(id), tasksRepo.updateUserInTasks(id)]);
 
 export default { getAll, getUserById, createUser, updateUser, deleteUser };

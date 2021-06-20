@@ -40,4 +40,9 @@ const deleteUser = async (id: string): Promise<void> => {
   await userRepository.delete(id);
 };
 
+export const toResponse = (user: Users): { id: string; name: string; login: string } => {
+  const { id, name, login } = user;
+  return { id, name, login };
+};
+
 export default { getAll, getUserById, createUser, updateUser, deleteUser };

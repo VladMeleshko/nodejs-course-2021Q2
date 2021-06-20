@@ -73,6 +73,11 @@ const updateUserInTasks = async (userId: string): Promise<Tasks[]> => {
   return tasks;
 };
 
+export const toResponse = (task: Tasks): Tasks => {
+  const { id, title, order, description, userId, boardId, columnId } = task;
+  return { id, title, order, description, userId, boardId, columnId };
+};
+
 export default {
   getAll,
   getTaskById,
