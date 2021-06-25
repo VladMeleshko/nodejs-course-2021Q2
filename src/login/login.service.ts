@@ -1,0 +1,13 @@
+import jwt from 'jsonwebtoken';
+import config from '../common/config';
+import loginRepo from './login.memory.repository';
+
+const autoriseUser = async (login: string, password: string): Promise<any> => {
+  const user = await loginRepo.autoriseUser(login, password);
+  const token = jwt.sign({ userId: user.id, login: user.login }, `${config.JWT_SECRET_KEY}`, {
+    expiresIn: 60 * 60 * 24,
+  });
+  return token;
+};
+
+export default { autoriseUser };

@@ -8,9 +8,9 @@ router.route('/').post(async (req, res) => {
     const candidateToken = await loginRepo.autoriseUser(login, password);
     res.status(200).json(candidateToken);
   } catch (e) {
-    if (e.message === 'Unauthorized') {
+    if (e.message === 'Login or password incorrect!') {
       res.status(401).send(e);
-    } else if (e.message === 'Forbidden') {
+    } else if (e.message === 'User not found!') {
       res.status(403).send(e);
     }
   }
