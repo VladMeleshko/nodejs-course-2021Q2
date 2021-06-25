@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import { Users } from '../../entities/user';
 import { tryDBConnect } from '../../helpers/db';
 
@@ -17,7 +18,11 @@ const getUserById = async (id: string): Promise<Users> => {
 
 const createUser = async (name: string, login: string, password: string): Promise<Users> => {
   const userRepository = await userRepositoryPromise;
-  const user = await userRepository.create({ name, login, password });
+  const user = await userRepository.create({
+    name,
+    login,
+    password: bcrypt.hashSync(password, 10), //
+  });
   await userRepository.save(user);
   return user;
 };
@@ -30,7 +35,7 @@ const updateUser = async (
 ): Promise<Users> => {
   const userRepository = await userRepositoryPromise;
   const user = await userRepository.findOneOrFail(id);
-  await userRepository.update(id, { name, login, password });
+  await userRepository.update(id, { name, login, password: bcrypt.hashSync(password, 10) }); //
   return user;
 };
 

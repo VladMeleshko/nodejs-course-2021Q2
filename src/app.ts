@@ -5,6 +5,7 @@ import YAML from 'yamljs';
 import userRouter from './resources/users/user.router';
 import boardRouter from './resources/boards/board.router';
 import taskRouter from './resources/tasks/task.router';
+import loginRouter from './resources/login/login.router'; //
 import middleware from './logger_and_error_handlers/middleware';
 
 const app = express();
@@ -13,6 +14,8 @@ const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 app.use(express.json());
 
 app.use(middleware.logging);
+
+app.use('/login', loginRouter); //
 
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
