@@ -33,7 +33,7 @@ export class UserMigration1624120318968 implements MigrationInterface {
     );
 
     const adminPassword = hashUserPassword('admin');
-    queryRunner.manager.insert(Users, {
+    await queryRunner.manager.insert(Users, {
       name: 'admin',
       login: 'admin',
       password: adminPassword,
@@ -41,6 +41,7 @@ export class UserMigration1624120318968 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.manager.delete(Users, { name: 'admin', login: 'admin' });
     await queryRunner.dropTable('Users');
   }
 }

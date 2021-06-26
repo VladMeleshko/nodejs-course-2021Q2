@@ -9,9 +9,9 @@ router.route('/').post(async (req, res) => {
     res.status(200).json({ token: candidateToken });
   } catch (e) {
     if (e.message === 'Login or password incorrect!') {
-      res.status(401).send(e);
+      res.status(401).send(e.message);
     } else if (e.message === 'User not found!') {
-      res.status(403).send(e);
+      res.status(403).send(e.message);
     }
   }
 });
