@@ -1,6 +1,6 @@
-import bcrypt from 'bcrypt';
 import { Users } from '../../entities/user';
 import { tryDBConnect } from '../../helpers/db';
+import { hashUserPassword } from '../../validate-session';
 
 const userRepositoryPromise = tryDBConnect().then(connection => connection.getRepository(Users));
 
@@ -18,10 +18,11 @@ const getUserById = async (id: string): Promise<Users> => {
 
 const createUser = async (name: string, login: string, password: string): Promise<Users> => {
   const userRepository = await userRepositoryPromise;
+  const hashPassword = hashUserPassword(password);
   const user = await userRepository.create({
     name,
     login,
-    password: bcrypt.hashSync(password, 10), //
+    password: hashPassword,
   });
   await userRepository.save(user);
   return user;
@@ -35,7 +36,8 @@ const updateUser = async (
 ): Promise<Users> => {
   const userRepository = await userRepositoryPromise;
   const user = await userRepository.findOneOrFail(id);
-  await userRepository.update(id, { name, login, password: bcrypt.hashSync(password, 10) }); //
+  const hashPassword = hashUserPassword(password);
+  await userRepository.update(id, { name, login, password: hashPassword });
   return user;
 };
 

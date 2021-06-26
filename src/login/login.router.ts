@@ -6,7 +6,7 @@ router.route('/').post(async (req, res) => {
   try {
     const { login, password } = req.body;
     const candidateToken = await loginRepo.autoriseUser(login, password);
-    res.status(200).json(candidateToken);
+    res.status(200).json({ token: candidateToken });
   } catch (e) {
     if (e.message === 'Login or password incorrect!') {
       res.status(401).send(e);
