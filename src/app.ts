@@ -5,6 +5,8 @@ import YAML from 'yamljs';
 import userRouter from './resources/users/user.router';
 import boardRouter from './resources/boards/board.router';
 import taskRouter from './resources/tasks/task.router';
+import loginRouter from './login/login.router';
+import autoriseUser from './validate-session';
 import middleware from './logger_and_error_handlers/middleware';
 
 const app = express();
@@ -23,6 +25,9 @@ app.use('/', (req, res, next) => {
   }
   next();
 });
+
+app.use('/login', loginRouter);
+app.use(autoriseUser);
 
 app.use('/users', userRouter);
 app.use('/boards', taskRouter);
