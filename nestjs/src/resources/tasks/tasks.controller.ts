@@ -7,16 +7,13 @@ import {
   Put,
   Delete,
   Res,
-  UseGuards,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Tasks } from '../../entities/task';
 import { CreateTaskDto } from '../dto/tasks/create-tasks.dto';
 import { UpdateTaskDto } from '../dto/tasks/update-tasks.dto';
-import { ValidateSessionGuard } from 'src/login/validate-session.guard';
 
 @Controller('boards/:boardId/tasks/')
-@UseGuards(ValidateSessionGuard)
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
@@ -42,12 +39,8 @@ export class TasksController {
     @Param('boardId') boardId: string,
     @Res() res,
   ) {
-    try {
-      const task = await this.tasksService.createTask(boardId, createTaskDto);
-      res.status(201).json(Tasks.toResponse(task));
-    } catch {
-      res.status(404).send('Task was not created!');
-    }
+    const task = await this.tasksService.createTask(boardId, createTaskDto);
+    res.status(201).json(Tasks.toResponse(task));
   }
 
   @Put(':id')
@@ -57,25 +50,13 @@ export class TasksController {
     @Param('boardId') boardId: string,
     @Res() res,
   ) {
-    try {
-      const task = await this.tasksService.updateTask(
-        boardId,
-        id,
-        updateTaskDto,
-      );
-      res.status(200).json(Tasks.toResponse(task));
-    } catch (e) {
-      res.status(404).send(e);
-    }
+    const task = await this.tasksService.updateTask(boardId, id, updateTaskDto);
+    res.status(200).json(Tasks.toResponse(task));
   }
 
   @Delete(':id')
   async delete(@Param('id') id: string, @Res() res) {
-    try {
-      await this.tasksService.deleteTask(id);
-      res.status(204).send('Task has been deleted!');
-    } catch (e) {
-      res.status(404).send(e);
-    }
+    await this.tasksService.deleteTask(id);
+    res.status(204).send('Task has been deleted!');
   }
 }

@@ -2,11 +2,11 @@ import { Body, Controller, Post, Res } from '@nestjs/common';
 import { CreateLoginDto } from 'src/resources/dto/login/create-login.dto';
 import { LoginService } from './login.service';
 
-@Controller()
+@Controller('login')
 export class LoginController {
-  constructor(private readonly loginService: LoginService) {}
+  constructor(private loginService: LoginService) {}
 
-  @Post('/login')
+  @Post()
   async login(@Res() res, @Body() createLoginDto: CreateLoginDto) {
     try {
       const candidateToken = await this.loginService.autoriseUser(

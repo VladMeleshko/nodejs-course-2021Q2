@@ -5,25 +5,28 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { JwtService } from '@nestjs/jwt';
-// import { UsersService } from 'src/resources/users/users.service';
+import * as jwt from 'jsonwebtoken';
+import config from '../common/config';
 
 @Injectable()
 export class ValidateSessionGuard implements CanActivate {
-  constructor(
-    private jwtService: JwtService, // private usersService: UsersService,
-  ) {}
-
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
+
+    const validRoutes = ['/', '/doc', '/login'];
+
+    const path = request.path || request.routerPath;
+
+    if (validRoutes.includes(path)) {
+      return true;
+    }
+
     try {
       const userToken = request.header('authorization')?.split(' ')[1];
-      // console.log(request.header('authorization'));
       if (!userToken) throw new UnauthorizedException('Unauthorized');
-      this.jwtService.verify(userToken);
-      // this.usersService()
+      jwt.verify(userToken, config.JWT_SECRET_KEY);
       return true;
     } catch {
       throw new UnauthorizedException('Unauthorized');
