@@ -16,7 +16,7 @@ services:
         '--',
         'npm',
         'run',
-        'start:dev',
+        'start-migration',
       ]
     networks:
       - docker-basics-user-defined-bridge
