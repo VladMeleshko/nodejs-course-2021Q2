@@ -15,12 +15,12 @@ export class ErrorHandlingFilter implements ExceptionFilter {
     const res = ctx.getResponse();
     exception.message;
     this.loggerService.errorHandler(
-      exception.message || 'Internal server problem',
+      exception.message || 'Server problem',
       exception.getStatus() || 500,
     );
 
     res
       .status(exception.getStatus() || 500)
-      .send(exception.getResponse() || 'Internal server problem');
+      .send(exception.getResponse() || 'Server problem');
   }
 }

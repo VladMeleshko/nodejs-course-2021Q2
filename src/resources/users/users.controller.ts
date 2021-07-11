@@ -20,14 +20,14 @@ export class UsersController {
   @Get()
   async getAll(@Res() res) {
     const users = await this.usersService.getAll();
-    res.json(users.map(Users.toResponse));
+    res.send(users.map(Users.toResponse));
   }
 
   @Get(':id')
   async getById(@Param('id') id: string, @Res() res) {
     try {
       const user = await this.usersService.getUserById(id);
-      res.json(Users.toResponse(user));
+      res.send(Users.toResponse(user));
     } catch {
       res.status(404).send('No such user exist!');
     }
@@ -36,7 +36,7 @@ export class UsersController {
   @Post()
   async create(@Body() createUserDto: CreateUserDto, @Res() res) {
     const user = await this.usersService.createUser(createUserDto);
-    res.status(201).json(Users.toResponse(user));
+    res.status(201).send(Users.toResponse(user));
   }
 
   @Put(':id')
@@ -46,12 +46,12 @@ export class UsersController {
     @Res() res,
   ) {
     const user = await this.usersService.updateUser(id, updateUserDto);
-    res.status(200).json(Users.toResponse(user));
+    res.status(200).send(Users.toResponse(user));
   }
 
   @Delete(':id')
   async delete(@Param('id') id: string, @Res() res) {
     await this.usersService.deleteUser(id);
-    res.status(204).send('User has been deleted!');
+    res.status(200).send('User has been deleted!');
   }
 }

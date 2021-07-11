@@ -20,14 +20,14 @@ export class BoardsController {
   @Get()
   async getAll(@Res() res) {
     const boards = await this.boardsService.getAll();
-    res.json(boards.map(Boards.toResponse));
+    res.send(boards.map(Boards.toResponse));
   }
 
   @Get(':id')
   async getById(@Param('id') id: string, @Res() res) {
     try {
       const board = await this.boardsService.getBoardById(id);
-      res.json(Boards.toResponse(board));
+      res.send(Boards.toResponse(board));
     } catch {
       res.status(404).send('No such board exist!');
     }
@@ -36,7 +36,7 @@ export class BoardsController {
   @Post()
   async create(@Body() createBoardDto: CreateBoardDto, @Res() res) {
     const board = await this.boardsService.createBoard(createBoardDto);
-    res.status(201).json(Boards.toResponse(board));
+    res.status(201).send(Boards.toResponse(board));
   }
 
   @Put(':id')
@@ -46,12 +46,12 @@ export class BoardsController {
     @Res() res,
   ) {
     const board = await this.boardsService.updateBoard(id, updateBoardDto);
-    res.status(200).json(Boards.toResponse(board));
+    res.status(200).send(Boards.toResponse(board));
   }
 
   @Delete(':id')
   async delete(@Param('id') id: string, @Res() res) {
     await this.boardsService.deleteBoard(id);
-    res.status(204).send('Board has been deleted!');
+    res.status(200).send('Board has been deleted!');
   }
 }

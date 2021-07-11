@@ -6,7 +6,7 @@ import { config } from './common/ormconfig';
 import { UsersModule } from './resources/users/users.module';
 import { BoardsModule } from './resources/boards/boards.module';
 import { TasksModule } from './resources/tasks/tasks.module';
-import { LoginController } from './login/login.controller';
+// import { LoginController } from './login/login.controller';
 import { LoginModule } from './login/login.module';
 
 @Module({
@@ -17,7 +17,7 @@ import { LoginModule } from './login/login.module';
     TasksModule,
     LoginModule,
   ],
-  controllers: [AppController, LoginController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

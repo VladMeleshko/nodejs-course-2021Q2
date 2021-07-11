@@ -12,7 +12,7 @@ export class LoginController {
       const candidateToken = await this.loginService.autoriseUser(
         createLoginDto,
       );
-      res.status(200).json({ token: candidateToken });
+      res.status(200).send({ token: candidateToken });
     } catch (e) {
       if (e.message === 'Login or password incorrect!') {
         res.status(401).send(e.message);

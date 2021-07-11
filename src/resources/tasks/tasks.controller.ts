@@ -20,14 +20,14 @@ export class TasksController {
   @Get()
   async getAll(@Res() res) {
     const tasks = await this.tasksService.getAll();
-    res.json(tasks.map(Tasks.toResponse));
+    res.send(tasks.map(Tasks.toResponse));
   }
 
   @Get(':id')
   async getById(@Param('id') id: string, @Res() res) {
     try {
       const task = await this.tasksService.getTaskById(id);
-      res.json(Tasks.toResponse(task));
+      res.send(Tasks.toResponse(task));
     } catch {
       res.status(404).send('No such task exist!');
     }
@@ -40,7 +40,7 @@ export class TasksController {
     @Res() res,
   ) {
     const task = await this.tasksService.createTask(boardId, createTaskDto);
-    res.status(201).json(Tasks.toResponse(task));
+    res.status(201).send(Tasks.toResponse(task));
   }
 
   @Put(':id')
@@ -51,12 +51,12 @@ export class TasksController {
     @Res() res,
   ) {
     const task = await this.tasksService.updateTask(boardId, id, updateTaskDto);
-    res.status(200).json(Tasks.toResponse(task));
+    res.status(200).send(Tasks.toResponse(task));
   }
 
   @Delete(':id')
   async delete(@Param('id') id: string, @Res() res) {
     await this.tasksService.deleteTask(id);
-    res.status(204).send('Task has been deleted!');
+    res.status(200).send('Task has been deleted!');
   }
 }

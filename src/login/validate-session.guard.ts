@@ -24,7 +24,7 @@ export class ValidateSessionGuard implements CanActivate {
     }
 
     try {
-      const userToken = request.header('authorization')?.split(' ')[1];
+      const userToken = request.headers['authorization']?.split(' ')[1];
       if (!userToken) throw new UnauthorizedException('Unauthorized');
       jwt.verify(userToken, config.JWT_SECRET_KEY);
       return true;
