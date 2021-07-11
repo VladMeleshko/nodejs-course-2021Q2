@@ -22,4 +22,9 @@ export class Tasks {
 
   @Column({ nullable: true })
   columnId!: string;
+
+  static toResponse = (task: Tasks): Tasks => {
+    const { id, title, order, description, userId, boardId, columnId } = task;
+    return { id, title, order, description, userId, boardId, columnId };
+  };
 }

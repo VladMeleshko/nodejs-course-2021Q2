@@ -13,4 +13,11 @@ export class Users {
 
   @Column()
   password!: string;
+
+  static toResponse = (
+    user: Users,
+  ): { id: string; name: string; login: string } => {
+    const { id, name, login } = user;
+    return { id, name, login };
+  };
 }
