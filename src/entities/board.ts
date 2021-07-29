@@ -11,4 +11,9 @@ export class Boards {
 
   @Column('simple-json')
   columns!: Columns[];
+
+  static toResponse = (board: Boards): Boards => {
+    const { id, title, columns } = board;
+    return { id, title, columns };
+  };
 }
